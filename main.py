@@ -5,8 +5,31 @@
 import functools
 
 
+class UnderAge(Exception):
+    def __init__(self, age):
+        self.age = age
+
+    def __str__(self):
+        return " your age is under 18. you can come in %s years" + str(18 - self.age)
+
+    def get_age(self):
+        return self.age
+
+
+class FactorialArgumentError(Exception):
+
+    def __init__(self, arg):
+        self.arg = arg
+
+    def __str__(self):
+        return "provided argument %s us not a positive integer." % self.arg
+
+    def get_arg(self):
+        return self.arg
+
+
 def add(a, b):
-    return a+b
+    return a + b
 
 
 def combine_coins(coin, numbers):
@@ -24,7 +47,7 @@ def dividers_to_number(number):
 
 
 def double_letter1(str1):
-    return str1+str1
+    return str1 + str1
 
 
 def secret(a):
@@ -40,11 +63,11 @@ def double_letter(my_str):
 
 
 def four_dividers(number):
-    return list(filter(dividers_to_number, range(1, number+1)))
+    return list(filter(dividers_to_number, range(1, number + 1)))
 
 
 def sum_of_digits(number):
-    return functools.reduce(add, range(1, number+1))
+    return functools.reduce(add, range(1, number + 1))
 
 
 print(sum_of_digits(8))
@@ -68,10 +91,58 @@ words = sentence.split()
 secret1 = [word[0] for word in words if word != "the"]
 print(secret1)
 
+number_1 = int(input("enter first number:"))
+number_2 = int(input("enter second number:"))
+try:
+    print(" the result is: " + str(number_1 / number_2))
+
+except ZeroDivisionError as e:
+    print("cannot divide the provided input.")
+
+except ValueError:
+    print("invalid input was provided, please provide integers only! ")
 
 
+def read_file(file_name):
+    print("__CONTENT_START__")
+    try:
+        output = open(file_name, "r")
+        object_file = output.read().split()
+        print(object_file)
+    except FileNotFoundError:
+        print("__NO_SUCH_FILE__")
+    finally:
+        print("__CONTENT_END__")
 
 
+def factorial(n):
+    try:
+        if not isinstance(n, int) or n < 0:
+            raise FactorialArgumentError(n)
+    except FactorialArgumentError as e:
+        print("Function Expected positive integer, and instead got %s. " % type(e.get_arg()))
+
+    else:
+        fact = 1
+        for i in range(n, 0, -1):
+            fact = fact * i
+        return fact
 
 
+def send_invitation(name, age):
+    try:
+        if int(age) < 18:
+            raise UnderAge(age)
+    except UnderAge as e:
+        print("under age" % type(e.get_age()))
+    else:
+        print("You should send an invite to " + name)
 
+
+def main():
+    read_file("sg.txt")
+    print(factorial(4))
+    send_invitation("ofir", 20)
+
+
+main()
