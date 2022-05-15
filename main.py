@@ -3,6 +3,8 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import functools
+import itertools
+import random
 
 
 class UnderAge(Exception):
@@ -139,10 +141,63 @@ def send_invitation(name, age):
         print("You should send an invite to " + name)
 
 
+def is_prime(n):
+    # Corner case
+    if n <= 1:
+        return False
+    # Check from 2 to n-1
+    for i in range(2, n):
+        if n % i == 0:
+            return False
+    return True
+
+
+def translate(str1):
+    word1 = {'esta': 'is', 'la': 'the', 'en': 'in', 'gato': 'cat', 'casa': 'house', 'el': 'the'}
+    str2 = list(str1.split())
+    gen = (n for n in str2)
+    for i in range(len(str2)):
+        print(word1.get(next(gen)))
+
+
+def first_prime_over(n):
+    prime_generator = (i for i in range(n, n ** n) if is_prime(i))
+    print(next(prime_generator))
+
+
+def parse_ranges(ranges_string):
+    list1 = []
+    ranges_list = list(ranges_string)
+    for i in range(0, len(ranges_list), 4):
+        print(int(ranges_list[i]))
+        print(int(ranges_list[i+2]))
+        for n in range(int(ranges_list[i]), int(ranges_list[i + 2])):
+            list1.append(n)
+    for i in list1:
+        print(i)
+
+
+cube_game = (random.randint(1, 6) for i in range(4))
+
+
 def main():
     read_file("sg.txt")
     print(factorial(4))
     send_invitation("ofir", 20)
+    print(translate("el gato esta en la casa"))
+    print(first_prime_over(1000000))
+    gen = (i / 2 for i in [0, 9, 21, 32])
+    print(next(gen))
+    print(next(gen))
+
+    total = 0
+    for num in cube_game:
+        total += num
+    print(total)
+
+    for permutation in itertools.permutations([0, 5, 6, 9]):
+        print(permutation)
+    print(parse_ranges("1-2,4-4,8-10"))
 
 
 main()
