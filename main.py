@@ -5,6 +5,7 @@
 import functools
 import itertools
 import random
+import winsound
 
 
 class UnderAge(Exception):
@@ -166,18 +167,22 @@ def first_prime_over(n):
 
 
 def parse_ranges(ranges_string):
-    list1 = []
-    ranges_list = list(ranges_string)
-    for i in range(0, len(ranges_list), 4):
-        print(int(ranges_list[i]))
-        print(int(ranges_list[i+2]))
-        for n in range(int(ranges_list[i]), int(ranges_list[i + 2])):
-            list1.append(n)
-    for i in list1:
-        print(i)
+    list2 = list(ranges_string.split(","))
+    print(list2)
+    gen = (n for n in list2 if n != ',')
+    for i in gen:
+        gen1 = (num for num in range(int(i[0]), int(i[2]) + 1))
+        return gen1
 
 
 cube_game = (random.randint(1, 6) for i in range(4))
+
+
+def get_fibo(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
 
 
 def main():
@@ -198,6 +203,28 @@ def main():
     for permutation in itertools.permutations([0, 5, 6, 9]):
         print(permutation)
     print(parse_ranges("1-2,4-4,8-10"))
+    print("----------")
+    fibo_gen = get_fibo(5)
+    print(next(fibo_gen))
+    print(next(fibo_gen))
+    print(next(fibo_gen))
+    print(next(fibo_gen))
+    print("----------------")
+    freqs = {"la": 220,
+             "si": 247,
+             "do": 261,
+             "re": 293,
+             "mi": 329,
+             "fa": 349,
+             "sol": 392,
+             }
+
+    notes = "sol,250-mi,250-mi,500-fa,250-re,250-re,500-do,250-re,250-mi,250-fa,250-sol,250-sol,250-sol,500"
+    song = notes.split("-")
+    iter_song = song.__iter__()
+    for i in range(len(song)):
+        yon = next(iter_song).split(",")
+        winsound.Beep(freqs.get(yon[0]), int(yon[1]))
 
 
 main()
