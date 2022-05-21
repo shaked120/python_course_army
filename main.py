@@ -2,10 +2,88 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import collections
 import functools
-import itertools
+import types
+from itertools import combinations
 import random
 import winsound
+import itertools
+
+
+class MusicNotes:
+    def __init__(self):
+        self.index = -1
+        self.la = 66
+        self.si = 61.74
+        self.do = 65.41
+        self.re = 73.42
+        self.mi = 82.41
+        self.fa = 87.31
+        self.sol = 98
+        self.list = [[self.la, self.la * 2, self.la * 4, self.la * 8, self.la * 16],
+                     [self.si, self.si * 2, self.si * 4, self.si * 8, self.si * 16],
+                     [ self.do, self.do * 2, self.do * 4, self.do * 8, self.do * 16],
+                     [self.re, self.re * 2, self.re * 4, self.re * 8, self.re * 16],
+                     [self.mi, self.mi * 2, self.mi * 4, self.mi * 8, self.mi * 16],
+                     [self.fa, self.fa * 2, self.fa * 4, self.fa * 8, self.fa * 16],
+                     [self.sol, self.sol * 2, self.sol * 4, self.sol * 8, self.sol * 16]]
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.list) -1:
+            raise StopIteration
+        self.index += 1
+        return self.list[self.index]
+
+
+notes_iter = iter(MusicNotes())
+for freq in notes_iter:
+    print(freq)
+
+
+class employee:
+    def __init__(self, name, age, salary):
+        self.name = name
+        self.age = age
+        self.salary = salary
+
+    def get_name(self):
+        return self.name
+
+
+class EmployeeManger:
+    def __init__(self):
+        self.employee_list = []
+        self.eml_index = -1
+
+    def add_employee(self, new_empl):
+        self.employee_list.append(new_empl)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.eml_index >= len(self.employee_list) -1:
+            raise StopIteration()
+
+        self.eml_index += 1
+        return self.employee_list[self.eml_index].get_name()
+
+
+hr_manager = EmployeeManger()
+hr_manager.add_employee(employee("lia levi", 30, 20000))
+hr_manager.add_employee(employee("yosef cohen", 32, 4000))
+hr_manager.add_employee(employee("oded haim", 47, 5100))
+
+for emp_name in hr_manager:
+    print(emp_name)
+
+
+gen5 = (x ** 2 for x in [1, 2, 3])
+print(dir(gen5))
 
 
 class UnderAge(Exception):
@@ -225,6 +303,11 @@ def main():
     for i in range(len(song)):
         yon = next(iter_song).split(",")
         winsound.Beep(freqs.get(yon[0]), int(yon[1]))
+
+    numbers = iter(list(range(1, 101, 3)))
+    for i in numbers:
+        print(i)
+    print("------------")
 
 
 main()
